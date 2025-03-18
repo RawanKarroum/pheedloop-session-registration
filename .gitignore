@@ -5,6 +5,7 @@ npm-debug.log
 
 # Python dependencies
 venv/
+.venv/
 __pycache__/
 db.sqlite3
 
