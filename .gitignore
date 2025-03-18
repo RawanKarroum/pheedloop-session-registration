@@ -1,0 +1,11 @@
+# Node dependencies
+node_modules/
+npm-debug.log
+
+
+# Python dependencies
+venv/
+__pycache__/
+db.sqlite3
+
+.env
