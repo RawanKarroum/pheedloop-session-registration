@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./../styles.css";
 
 const SessionList = ({ selectedSessions, setSelectedSessions }) => {
   const [sessions, setSessions] = useState([]);
   const [conflicts, setConflicts] = useState([]);
+  const [warning, setWarning] = useState(false);
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/sessions/")
@@ -11,10 +13,23 @@ const SessionList = ({ selectedSessions, setSelectedSessions }) => {
       .catch((error) => console.error("Error fetching sessions:", error));
   }, []);
 
-  // Function to find conflicts
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+  
+
   const findConflicts = (sessionToCheck, updatedSelectedSessions) => {
     return updatedSelectedSessions.filter(
-      (s) => sessionToCheck.id !== s.id &&
+      (s) =>
+        sessionToCheck.id !== s.id &&
         sessionToCheck.start_time < s.end_time &&
         sessionToCheck.end_time > s.start_time
     );
@@ -22,20 +37,16 @@ const SessionList = ({ selectedSessions, setSelectedSessions }) => {
 
   const handleSelection = (session) => {
     const isSelected = selectedSessions.some((s) => s.id === session.id);
-    
     let updatedSelectedSessions;
 
     if (isSelected) {
-      // If deselecting, remove session from selectedSessions
       updatedSelectedSessions = selectedSessions.filter((s) => s.id !== session.id);
     } else {
-      // If selecting, add session to selectedSessions
       updatedSelectedSessions = [...selectedSessions, session];
     }
 
     setSelectedSessions(updatedSelectedSessions);
 
-    // Recalculate conflicts based on new selection
     let newConflicts = [];
     updatedSelectedSessions.forEach((s) => {
       let sessionConflicts = findConflicts(s, updatedSelectedSessions);
@@ -44,50 +55,45 @@ const SessionList = ({ selectedSessions, setSelectedSessions }) => {
       }
     });
 
-    // Remove duplicates in conflicts
     setConflicts([...new Set(newConflicts)]);
+    setWarning(newConflicts.length > 0);
+  };
+
+  const closePopup = () => {
+    setWarning(false);
   };
 
   return (
     <div>
       <h2>Select Sessions</h2>
-      
-      {conflicts.length > 0 && (
-        <div style={{ backgroundColor: "#ffcccb", padding: "10px", borderRadius: "5px" }}>
-          ⚠️ <b>Warning:</b> The following sessions are overlapping:
-          <ul>
-            {conflicts.map((c) => (
-              <li key={c.id}>
-                <b>{c.title}</b> ({c.start_time} - {c.end_time})
-              </li>
-            ))}
-          </ul>
+
+      {/* Floating Pop-up Warning */}
+      {warning && (
+        <div className="popup-warning">
+          ⚠️ <strong>Session conflicts detected!</strong>
+          <button className="close-btn" onClick={closePopup}>X</button>
         </div>
       )}
 
-      <ul>
-        {sessions.map((session) => {
-          const isConflicting = conflicts.some((c) => c.id === session.id);
-          
-          return (
-            <li key={session.id} style={{ 
-              backgroundColor: isConflicting ? "#ffddcc" : "transparent", 
-              padding: "5px", 
-              borderRadius: "5px"
-            }}>
-              <input
-                type="checkbox"
-                onChange={() => handleSelection(session)}
-                checked={selectedSessions.some((s) => s.id === session.id)}
-              />
-              {session.title} ({session.start_time} - {session.end_time})
-              {isConflicting && (
-                <span style={{ color: "red", marginLeft: "10px" }}>⚠️ Conflicting</span>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+<ul>
+  {sessions.map((session) => {
+    const isConflicting = conflicts.some((c) => c.id === session.id);
+    return (
+      <li key={session.id} className="session-item">
+        <input
+          type="checkbox"
+          onChange={() => handleSelection(session)}
+          checked={selectedSessions.some((s) => s.id === session.id)}
+        />
+        <span>
+          {session.title} ({formatDate(session.start_time)} - {formatDate(session.end_time)})
+        </span>
+        {isConflicting && <span style={{ color: "red", marginLeft: "6px" }}>⚠️</span>}
+      </li>
+    );
+  })}
+</ul>
+
     </div>
   );
 };
