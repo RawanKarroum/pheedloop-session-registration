@@ -68,7 +68,7 @@ npm start
 
 
 
-###💡 Design Decisions
+### 💡 Design Decisions
 React for the frontend – Provides a dynamic UI for user interaction.
 Django for the backend – Manages session storage and user registrations.
 PostgreSQL as the database – Ensures structured data storage.
