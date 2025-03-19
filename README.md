@@ -69,10 +69,10 @@ npm start
 
 
 ### 💡 Design Decisions
-React for the frontend – Provides a dynamic UI for user interaction.
-Django for the backend – Manages session storage and user registrations.
-PostgreSQL as the database – Ensures structured data storage.
-Session conflict detection – Warns users of overlapping sessions.
-.env file for local development – Keeps database credentials secure and configurable.
+- React for the frontend – Provides a dynamic UI for user interaction.
+- Django for the backend – Manages session storage and user registrations.
+- PostgreSQL as the database – Ensures structured data storage.
+- Session conflict detection – Warns users of overlapping sessions.
+- .env file for local development – Keeps database credentials secure and configurable.
 
 
