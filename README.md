@@ -12,12 +12,12 @@ git clone https://github.com/RawanKarroum/pheedloop-session-registration
 cd pheedloop-session-registration
 ```
 
-###2️⃣ Install Dependencies
+### 2️⃣ Install Dependencies
 ```sh
 pip install -r requirements.txt
 ```
 
-###3️⃣ Configure PostgreSQL Database
+### 3️⃣ Configure PostgreSQL Database
 - Ensure PostgreSQL is installed and running.
 - Create a .env file in the backend directory and add your database credentials:
 ```sh
@@ -28,33 +28,33 @@ DB_HOST=localhost
 DB_PORT=5432
 ```
 
-###4️⃣ Apply Migrations
+### 4️⃣ Apply Migrations
 ```sh
 python manage.py migrate
 ```
 
-###5️⃣ Start the Backend Server
+### 5️⃣ Start the Backend Server
 ```sh
 python manage.py runserver
 ```
 
-###🎨 Frontend (React) Setup
-###6️⃣ Navigate to the Frontend Directory
+### 🎨 Frontend (React) Setup
+### 6️⃣ Navigate to the Frontend Directory
 ```sh
 cd frontend
 ```
 
-###7️⃣ Install Dependencies
+### 7️⃣ Install Dependencies
 ```sh
 npm install
 ```
 
-###8️⃣ Start the React App
+### 8️⃣ Start the React App
 ```sh
 npm start
 ```
 
-###📸 Screenshots
+### 📸 Screenshots
 
 9️⃣ List of Available Sessions
 ![image](https://github.com/user-attachments/assets/2ffd1bdb-c08b-417c-8275-570674a3240a)
